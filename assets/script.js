@@ -16,11 +16,6 @@ const slides = [
 		"tagLine": "Autocollants <span>avec découpe laser sur mesure</span>"
 	}
 ]
-//** Pour trouver le nombre des bullets point à ajouter**//
-
-let dotsnumber = slides.length
-console.log(dotsnumber)
-
 
 
 //** Pour recuperer les fleches**//
@@ -34,6 +29,7 @@ flechegauche.addEventListener("click", (Event) => {
 
 flechedroite.addEventListener("click", (Event) => {
 	console.log(Event.target.alt)
+
 })
 
 
@@ -52,3 +48,50 @@ for (let i = 0; i < bulletpoint.length; i++) {
 
 	})
 }
+
+//** Recuperer les images et les taglines**//
+let banner=document.querySelector(".banner-img")
+let p=document.querySelector("#banner p")
+let span=document.querySelector("#banner p span")
+console.log(banner,p,span)
+
+
+let index = 0; // Démarrer à la première slide//
+console.log(slides[index]) 
+flechedroite.addEventListener("click", () => {
+    
+	//  Incrémenter l'index
+    index++
+
+    // Si on dépasse la dernière image, revenir à la première
+    if (index >= slides.length) {
+        index = 0
+    }
+	updateSlide() 
+	
+    // Afficher l'élément dans la console
+   console.log(slides[index]) 
+})
+flechegauche.addEventListener("click", () => {
+    
+	//  Decrémenter l'index
+    index--
+
+    // Si on dépasse la première image, revenir à la dernière
+    if (index < 0) {
+        index = slides.length-1
+    }
+	updateSlide() 
+    // Afficher l'élément dans la console
+   console.log(slides[index]) 
+
+})
+
+// Fonction pour mettre à jour l'affichage de la bannière et du texte
+function updateSlide() {
+   
+    banner.src = `./assets/images/slideshow/${slides[index].image}`
+    p.innerHTML = slides[index].tagLine
+	
+}
+
