@@ -22,11 +22,13 @@ const slides = [
 let flechegauche = document.querySelector(".arrow.arrow_left")
 let flechedroite = document.querySelector(".arrow.arrow_right")
 
+
 //** Pour recuperer les bullet points **//
 let bulletpoint = document.querySelectorAll(".dots .dot")
 console.log(bulletpoint.length)
 for (let i = 0; i < bulletpoint.length; i++) {
 	console.log(bulletpoint[i])//**  Vérifier que les éléments existent bien **//
+
 	//**  Nous écoutons les bullet points**//
 	bulletpoint[i].addEventListener("click", (event) => {
 		//** */ Supprimer la classe "dot_selected" de tous les points **//
@@ -49,7 +51,7 @@ for (let i = 0; i < bulletpoint.length; i++) {
 let banner = document.querySelector(".banner-img")
 let p = document.querySelector("#banner p")
 let span = document.querySelector("#banner p span")
-console.log(banner, p, span) //**  Afficher l'élément dans la console**//
+console.log(banner, p, span) //**  Afficher les éléments dans la console**//
 
 
 let index = 0 // Démarrer à la première slide//
@@ -62,18 +64,10 @@ console.log(bulletpoint[i])
 //**  Nous écoutons la flèche droite**//
 
 flechedroite.addEventListener("click", (Event) => {
-	console.log(Event.target.alt)
-	//  Incrémenter l'index et i
-	index++
-	i++
-	// Si on dépasse la dernière image, revenir à la première//
-	if (index >= slides.length) {
-		index = 0
-	}
-	// Si on dépasse le dernièr bullet point, revenir au premièr//
-	if (i >= bulletpoint.length) {
-		i = 0
-	}
+		
+	let fleche = Event.target;  // on récupère l'élément cliqué
+    console.log(fleche.alt);
+	updateCompteurs(fleche)
 	updateSlide() //**Appel à la fonction pour mettre à jour l'affichage de la bannière et du texte**//
 
 	//** */ Supprimer la classe "dot_selected" de tous les points **//
@@ -90,18 +84,10 @@ flechedroite.addEventListener("click", (Event) => {
 //**  Nous écoutons la flèche gauche**//
 
 flechegauche.addEventListener("click", (Event) => {
-	console.log(Event.target.alt)
-	// ** Decrémenter l'index et i**//
-	index--
-	i--
-	//** Si on dépasse la première image, revenir à la dernière**//
-	if (index < 0) {
-		index = slides.length - 1
-	}
-	//** Si on dépasse le premièr bullet point, revenir au dernièr** //
-	if (i < 0) {
-		i = bulletpoint.length - 1
-	}
+     	
+	let fleche = Event.target;  // on récupère l'élément cliqué
+    console.log(fleche.alt);
+    updateCompteurs(fleche)
 	updateSlide() //**Appel à la fonction pour mettre à jour l'affichage de la bannière et du texte**//
 
 	//** */ Supprimer la classe "dot_selected" de tous les points **//
@@ -122,4 +108,35 @@ function updateSlide() {
 	p.innerHTML = slides[index].tagLine
 
 }
+// ** Fonction pour mettre à jour les compteurs suite au clique sur la fleche droite/gauche**//
 
+function updateCompteurs(fleche){
+
+if(fleche.alt==="Flèche gauche"){
+	
+	// ** Decrémenter l'index et i**//
+	index--
+	i--
+	//** Si on dépasse la première image, revenir à la dernière**//
+	if (index < 0) {
+		index = slides.length - 1
+	}
+	//** Si on dépasse le premièr bullet point, revenir au dernièr** //
+	if (i < 0) {
+		i = bulletpoint.length - 1
+	}
+}
+else if (fleche.alt === "Flèche droite"){
+	//  Incrémenter l'index et i
+	index++
+	i++
+	// Si on dépasse la dernière image, revenir à la première//
+	if (index >= slides.length) {
+		index = 0
+	}
+	// Si on dépasse le dernièr bullet point, revenir au premièr//
+	if (i >= bulletpoint.length) {
+		i = 0
+	}}
+return index,i
+}
