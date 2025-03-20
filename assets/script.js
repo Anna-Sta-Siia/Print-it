@@ -16,7 +16,9 @@ const slides = [
 		"tagLine": "Autocollants <span>avec découpe laser sur mesure</span>"
 	}
 ]
+let index = 0 // Démarrer à la première slide et au premièr point //
 
+console.log(slides.length)
 
 //** Pour recuperer les fleches**//
 let flechegauche = document.querySelector(".arrow.arrow_left")
@@ -26,24 +28,19 @@ let flechedroite = document.querySelector(".arrow.arrow_right")
 //** Pour recuperer les bullet points **//
 let bulletpoint = document.querySelectorAll(".dots .dot")
 console.log(bulletpoint.length)
-for (let i = 0; i < bulletpoint.length; i++) {
-	console.log(bulletpoint[i])//**  Vérifier que les éléments existent bien **//
+for (let index = 0; index < bulletpoint.length; index++) {
+	console.log(bulletpoint[index])//**  Vérifier que les éléments existent bien **//
 
 	//**  Nous écoutons les bullet points**//
-	bulletpoint[i].addEventListener("click", (event) => {
-		//** */ Supprimer la classe "dot_selected" de tous les points **//
-		bulletpoint.forEach(dot => dot.classList.remove("dot_selected"))
-
-		//**  Ajouter la classe "dot_selected" au point cliqué **//
-		event.target.classList.add("dot_selected")
-
-		//**Changement de la bannière et du texte suit suite à la clique sur un bullet point concret**//
-		index = i
-		updateSlide()//**Appel à la fonction pour mettre à jour l'affichage de la bannière et du texte**//
+	bulletpoint[index].addEventListener("click", (event) => {
+	
+		updatebulletpoints(index)//**Appel à la fonction pour mettre à jour des bullet points**//
+		
+		updateSlide(index)//**Appel à la fonction pour mettre à jour l'affichage de la bannière et du texte**//
 
 		//**  Afficher l'élément dans la console**//
 		console.log(slides[index])
-		console.log(bulletpoint[i])
+		console.log(bulletpoint[index])
 	})
 }
 
@@ -54,55 +51,41 @@ let span = document.querySelector("#banner p span")
 console.log(banner, p, span) //**  Afficher les éléments dans la console**//
 
 
-let index = 0 // Démarrer à la première slide//
-i = 0// Démarrer au premièr point//
+
 
 //**  Afficher l'élément dans la console**//
 console.log(slides[index])
-console.log(bulletpoint[i])
+console.log(bulletpoint[index])
 
 //**  Nous écoutons la flèche droite**//
 
 flechedroite.addEventListener("click", (Event) => {
-		
-	let fleche = Event.target;  // on récupère l'élément cliqué
-    console.log(fleche.alt);
-	updateCompteurs(fleche)
-	updateSlide() //**Appel à la fonction pour mettre à jour l'affichage de la bannière et du texte**//
-
-	//** */ Supprimer la classe "dot_selected" de tous les points **//
-	bulletpoint.forEach(dot => dot.classList.remove("dot_selected"))
-
-	//**  Ajouter la classe "dot_selected" au point i **//
-	bulletpoint[i].classList.add("dot_selected")
-	//**  Afficher l'élément dans la console**//
+    console.log(Event.target.alt)
+	index++
+	index=updateCompteurs(index)
+	updateSlide(index) //**Appel à la fonction pour mettre à jour l'affichage de la bannière et du texte**//
+    updatebulletpoints(index)//**Appel à la fonction pour mettre à jour des bullet points**//
 
 	console.log(slides[index])
-	console.log(bulletpoint[i])
+	console.log(bulletpoint[index])
 })
 
 //**  Nous écoutons la flèche gauche**//
 
-flechegauche.addEventListener("click", (Event) => {
-     	
-	let fleche = Event.target;  // on récupère l'élément cliqué
-    console.log(fleche.alt);
-    updateCompteurs(fleche)
-	updateSlide() //**Appel à la fonction pour mettre à jour l'affichage de la bannière et du texte**//
+flechegauche.addEventListener("click", (Event) => { 	
+	index--
+	index=updateCompteurs(index)
+	updateSlide(index) //**Appel à la fonction pour mettre à jour l'affichage de la bannière et du texte**//
+    updatebulletpoints(index)//**Appel à la fonction pour mettre à jour des bullet points**//
 
-	//** */ Supprimer la classe "dot_selected" de tous les points **//
-	bulletpoint.forEach(dot => dot.classList.remove("dot_selected"))
-
-	//**  Ajouter la classe "dot_selected" au point i **//
-	bulletpoint[i].classList.add("dot_selected")
 	//**  Afficher l'élément dans la console**//
 
 	console.log(slides[index])
-	console.log(bulletpoint[i])
+	console.log(bulletpoint[index])
 })
 
 // ** Fonction pour mettre à jour l'affichage de la bannière et du texte**//
-function updateSlide() {
+function updateSlide(index) {
 
 	banner.src = `./assets/images/slideshow/${slides[index].image}`
 	p.innerHTML = slides[index].tagLine
@@ -110,33 +93,30 @@ function updateSlide() {
 }
 // ** Fonction pour mettre à jour les compteurs suite au clique sur la fleche droite/gauche**//
 
-function updateCompteurs(fleche){
+function updateCompteurs(index){
 
-if(fleche.alt==="Flèche gauche"){
-	
-	// ** Decrémenter l'index et i**//
-	index--
-	i--
 	//** Si on dépasse la première image, revenir à la dernière**//
+	//** Si on dépasse le premièr bullet point, revenir au dernièr** //
 	if (index < 0) {
 		index = slides.length - 1
 	}
-	//** Si on dépasse le premièr bullet point, revenir au dernièr** //
-	if (i < 0) {
-		i = bulletpoint.length - 1
-	}
-}
-else if (fleche.alt === "Flèche droite"){
-	//  Incrémenter l'index et i
-	index++
-	i++
 	// Si on dépasse la dernière image, revenir à la première//
-	if (index >= slides.length) {
+	
+	// Si on dépasse le dernièr bullet point, revenir au premièr//
+	if (index >= slides.length ) {
 		index = 0
 	}
-	// Si on dépasse le dernièr bullet point, revenir au premièr//
-	if (i >= bulletpoint.length) {
-		i = 0
-	}}
-return index,i
+	
+	return index
+	}
+
+//**La fonction pour mettre à jour des bullet points**//
+function updatebulletpoints(index) {
+	
+	//** */ Supprimer la classe "dot_selected" de tous les points **//
+	bulletpoint.forEach(dot => dot.classList.remove("dot_selected"))
+
+	//**  Ajouter la classe "dot_selected" au point cliqué **//
+	bulletpoint[index].classList.add("dot_selected")
+
 }
